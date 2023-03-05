@@ -1,0 +1,138 @@
+---
+title: "Homework3"
+author: "Yeabin Moon"
+date: "2022-09-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Use gapminder dataset. 
+```{r}
+
+library(gapminder)
+library(tidyverse)
+```
+
+### 1. Consider the following: Explain what relationship the figure represents.
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = pop,
+                          y = lifeExp)) 
+p + geom_point() +
+    geom_smooth(color = "orange") 
+```
+```{r}
+#there's very vague relationship between population and life expectancy, vaguely defined: population increases and life expectancy increases. The trend is very prevalent between popluation of 0e+00 and 5e+08
+
+```
+
+### 2. What does the orange line represent?
+```{R}
+#Orange line represents a trend line over existing visualization of ggplot. It draws general correlaiton between population and life expectancy
+```
+### 3. You can use a range of methods in geom_smooth(). What is the default method? Try to plot four figures using different methods in geom_smooth(). 
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = pop,
+                          y = lifeExp), size=2) 
+p + geom_point() +
+    geom_smooth(method='gam', se=FALSE)  
+# default method is method ='LOESS'. or gam function
+```
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = pop,
+                          y = lifeExp)) 
+p + geom_point() +
+    geom_smooth(method = "auto", formula = y ~ x,
+  se = TRUE ) 
+```
+```{r}
+
+p <- ggplot(data = gapminder,
+            mapping = aes(x = pop,
+                          y = lifeExp)) 
+p + geom_point() +
+    geom_smooth(method = 'lm', color='red') 
+```
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = pop,
+                          y = lifeExp)) 
+p + geom_point() +
+    geom_smooth(method = 'glm', color= 'green', size =3) 
+
+
+```
+
+### 4. What is the grey area around the trend line? Modify the code in question 1 and plot the figure without it.
+```{r}
+# The grey area around the trend line display confidence interval,according se function, you can also control the level such as level=0.95 as 95% confidence to the trend line. in order to take it off you need to set se=FALSE
+```
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = pop,
+                          y = lifeExp)) 
+p + geom_point() +
+    geom_smooth(color = "orange", se=FALSE) 
+```
+
+### 5. We learned in class the scale mapping, such as scale_x_log10(). Search online and list two more commands (functions) to transform the value of x.
+
+```{r}
+# you can use transform() function to transform the value of x, for example
+transformed=transform(gapminder, gdpPercap = gdpPercap^2)
+# square the value of gdpPercap when it stands as a X variable in gapminder dataframe, all rows of gdpPercap got^2
+```
+```{r}
+
+p<- ggplot(gapminder, aes(x = pop, y = lifeExp)) 
+p+ geom_point() +
+  scale_y_reverse()  # this function reversed the x axis
+
+```
+### 6. Explain the difference between the two code blocks
+```{r}
+# code 1
+p <-  ggplot(data = gapminder,
+             mapping = aes(x = gdpPercap,
+                            y = lifeExp,
+                            color = year))
+p + geom_point() +
+    geom_smooth(method = "loess", se = F) + scale_x_log10()
+```
+```{r}
+# code 2
+p <-  ggplot(data = gapminder,
+             mapping = aes(x = gdpPercap,
+                            y = lifeExp,
+                            color = factor(year)))
+p + geom_point() +
+    geom_smooth(method = "loess", se = F) + scale_x_log10()
+
+```
+# The difference comes between first figure color= year whereas the second figure color= factor(year). In the second figure, year variable is treated as a factor therefore it distinguish each year on the graph by colors, whereas the first figure color is treated as a continuous not separated varible (like time series to show over period of time changes, therefore colors are not drastically different.
+
+### 7. Explain the difference between facet_wrap() and facet_grid(). Show the examples. You cannot use the same data in the lecture example.
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(y=gdpPercap)) 
+p + geom_histogram() +
+  facet_wrap(~continent)
+
+
+```
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(y=gdpPercap)) 
+p + geom_histogram() +
+  facet_grid(~continent)
+```
+
+#facet_grid produce a metrics of combination with one variable on x-axis, another variable on y axis just like columns and rows. It can shows position of certain combination, for example, Africa are visually having less gdpPercap baseline compare to Europe. However facet_wrap only wraps the graph in a 2d format it is hard to compare positions like facet_grid

@@ -1,0 +1,150 @@
+---
+title: "homework2"
+date: "2022-09-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Part I
+
+#### Q.1.1. Read the "life_expec.csv" file into R. Save it as a DataFrame named <em>life_expec</em>.
+
+```{r}
+library(readr)
+life_expec <- read_csv("life_expec.csv")
+```
+
+#### Q.1.2. Use the ggplot() function to create the first layer of your plot using the <em>life_expec</em> DataFrame.
+
+```{r}
+life_expec %>% 
+  ggplot()
+```
+
+#### Q.1.3. Add an aes() layer to your graph specifying <em>Avg_Life_Expec</em> as the dependent variable and <em>Year</em> as the independent variable.
+
+```{r}
+life_expec %>% 
+  ggplot(aes(x=Year,y=Avg_Life_Expec))
+```
+
+#### Q.1.4. Add a layer to your graph to illustrate the relationship between <em>Year</em> and <em>Avg_Life_Expec</em>.
+
+```{r}
+life_expec %>% 
+  ggplot(aes(x=Year,y=Avg_Life_Expec))+geom_point()
+```
+
+#### Q.1.5. Create a new tibble, <em>life_expec_filter</em>, containing only rows for which the <em>Race</em> variable has the value "All Races," and the Sex variable has the value "Both Sexes."
+
+```{r}
+life_expec_filter <- life_expec %>%
+  filter(Race =='All Races', Sex == 'Both Sexes')
+c
+```
+
+#### Q.1.6. Create a line graph that displays the relationship between <em>Avg_Life_Expec</em> and <em>Year</em>.
+
+```{r}
+life_expec_filter %>%
+  ggplot(aes(x=Year,y=Avg_Life_Expec))+geom_line()
+```
+
+#### Q.1.7. Give your graph a descriptive title that communicates the goal of the visualization: "United States Life Expectancy: 100 Years of Change"
+
+```{r}
+life_expec_filter %>%
+  ggplot(aes(x=Year,y=Avg_Life_Expec))+geom_line()+labs(title='United States Life Expectancy: 100 Years of Change')
+```
+
+#### Q.1.8. Give the y-axis this label: "Average Life Expectancy (Years)"
+
+```{r}
+life_expec_filter %>%
+  ggplot(aes(x=Year,y=Avg_Life_Expec))+geom_line()+labs(title='United States Life Expectancy: 100 Years of Change', y='Average Life Expectancy (Years)')
+```
+
+#### Q.1.9. Change the background color of your line graph to white.
+
+```{r}
+life_expec_filter %>%
+  ggplot(aes(x=Year,y=Avg_Life_Expec))+geom_line()+labs(title='United States Life Expectancy: 100 Years of Change', y='Average Life Expectancy (Years)')+theme( panel.background = element_rect(fill="white"))
+```
+
+## Part II
+
+Let's talk about your data. Each group needs to select data and present your story at the end of the module. Part II would help you prepare before the group discussion starts.
+
+#### Q.2.1. Describe the data you are interested in.
+
+```{r}
+#I am interested in the Uber stock data in 2022. The data provides historical data of Uber. The dataset provides daily data
+```
+
+#### Q.2.2. What makes you pay attention to this data, and who are the potential users?
+
+```{r}
+#I have always been fascinated by Uber and its business model in this digital age, with that interests I want to pay more attention to why people buy Uber's stock and what's the overall trend over time. The potential users can be Uber app users, or potential Uber stock buyer
+```
+
+#### Q.2.3. Describe how to access your data. What are the potential hurdles to gaining access?
+
+```{r}
+Uberdata <- read_csv('UBER.csv')
+head(Uberdata,n=5)  #I would be able to save the dataset as .csv to my local download, and import into R studio use read_csv commands. 
+```
+
+<b>Let's talk about the data structure. <br> \#### Q.2.4. What is the data format? Is this tabular data? How many are data sets included?
+
+```{r}
+#Yes it is tabular data as the data set has both columns and rows. This is a csv file contains both quantitative and qualitative data in the columns and rows. It includes time period data, numeric price data and integer data
+```
+
+#### Q.2.5. Is this panel (longitudinal) data? If yes, what's the individual identifier?
+
+```{r}
+#Yes it is panel data as the dataset focus on uber as a single object and its stock price variance over a period of time. 
+```
+
+#### Q.2.6. What is your specific area of interest? And why and how does your data fit your interest?
+
+```{r}
+#As I mentioned before, I like to see how good uber is doing as a business, and there are different factor to evaluate it. The stock market reflect investors' perception of company's ability to grow and earn profits long term. This data fits in my interests because it showsvairance of stock price and quantity of stock being bought by people over period of time.
+```
+
+#### Q.2.7. Pick up the five columns and describe them in words
+
+```{r}
+#column open: Price from the first transaction of a trading day,  column date: shows date record in 2022. column high: Price from the first transaction of a trading day. Column low: Minimum price in a trading day. Column volumn: Number of units traded in a day.
+```
+
+#### Q.2.7. Present some summary statistics of this data
+
+```{r}
+Uberdata %>%
+  summary()
+```
+
+#### Q.2.8. Present two figures showing interesting patterns within data.
+
+```{r}
+Uberdata %>%
+  filter(Date <='2019-05-31') %>%
+  ggplot(aes(x=Date,y=Volume))+geom_line()+labs(title='number of units traded through 05/2019')
+#throughout the month of may in 2019, the number of units traded decrease drastically.
+```
+
+```{r}
+Uberdata %>%
+  ggplot(aes(x=Date,y=Open))+geom_line()+labs(title='Price from the first transaction through 2022')
+
+```
+
+#### Q.2.9. What's the main challenge in working on this data?
+
+```{r}
+#one of the difference is to understand whether there is pre-requisite correlaiton between opening/closing price. I don't have too much expertise on finance forecasting/time series data analytics therefore need some previous knowledge and understanding on it.
+```
